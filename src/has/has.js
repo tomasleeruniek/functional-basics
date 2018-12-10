@@ -1,3 +1,5 @@
+const { any } = require("../helpers")
+
 /**
  * Check if value is in array
  *
@@ -17,4 +19,16 @@
  * has(elm => elm.id === 1)([{}, {id: 1}])
  * // => true
  */
-module.exports = () => () => {}
+module.exports = x => xs => {
+  if (typeof x === "function") {
+    return any(x, xs)
+  } else {
+    for (let i = 0; i < xs.length; i++) {
+      if (x === xs[i]) {
+        return true
+      }
+    }
+  }
+
+  return false
+}

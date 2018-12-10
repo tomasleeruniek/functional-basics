@@ -13,7 +13,7 @@
  * foldl(Math.max, [1,2,3]) = 3
  */
 const foldl = (f, xs, acc) => {
-  if (!acc) {
+  if (acc === undefined || acc === null) {
     acc = xs[0]
   }
 
@@ -37,9 +37,22 @@ const foldl = (f, xs, acc) => {
  * @example
  * applyAll([x => x + 2, x => x * 2], 1) = 6
  */
-const applyAll = (fs, x, i, xs) => {
-  return foldl((acc, val) => val(acc, i, xs), fs, x)
-}
+const applyAll = (fs, x, i, xs) => foldl((acc, val) => val(acc, i, xs), fs, x)
+
+/**
+ * Apply a function to every element of a list, returning true if any
+ * resulting values are true and false otherwise
+ *
+ * @param {Function}    Function to apply
+ * @param {[]}          List of values
+ *
+ * @return {boolean}
+ *
+ * @example
+ * any(x => x > 3, [1,2,6]) = true
+ */
+const any = (f, xs) =>
+  foldl((acc, val) => (acc || f(val)) && typeof f(val) === "boolean", xs, false)
 
 /**
  * Apply a function to every element of a list, returning true if all
@@ -53,12 +66,12 @@ const applyAll = (fs, x, i, xs) => {
  * @example
  * all(x => x > 3, [4,5,6]) = true
  */
-const all = (f, xs) => {
-  return foldl((acc, val) => acc && f(val), xs, true)
-}
+const all = (f, xs) =>
+  foldl((acc, val) => acc && f(val) && typeof f(val) === "boolean", xs, true)
 
 module.exports = {
   foldl,
   applyAll,
+  any,
   all,
 }
