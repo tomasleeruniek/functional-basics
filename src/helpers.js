@@ -38,16 +38,27 @@ const foldl = (f, xs, acc) => {
  * applyAll([x => x + 2, x => x * 2], 1) = 6
  */
 const applyAll = (fs, x, i, xs) => {
-  return foldl(
-    (acc, val) => {
-      return val(acc, i, xs)
-    },
-    fs,
-    x
-  )
+  return foldl((acc, val) => val(acc, i, xs), fs, x)
+}
+
+/**
+ * Apply a function to every element of a list, returning true if all
+ * resulting values are true and false otherwise
+ *
+ * @param {Function}    Function to apply
+ * @param {[]}          List of values
+ *
+ * @return {boolean}
+ *
+ * @example
+ * all(x => x > 3, [4,5,6]) = true
+ */
+const all = (f, xs) => {
+  return foldl((acc, val) => acc && f(val), xs, true)
 }
 
 module.exports = {
   foldl,
   applyAll,
+  all,
 }
