@@ -16,9 +16,9 @@ const { applyAll } = require("../helpers")
  * // => 4
  */
 module.exports = (...fs) => (...xs) => {
-  const f = fs.shift()
+  const [f, ...gs] = fs
 
   const y = f(...xs)
 
-  return applyAll(fs, y)
+  return applyAll(gs, y)
 }
