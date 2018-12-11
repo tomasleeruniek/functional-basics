@@ -1,4 +1,4 @@
-const { all } = require("../helpers")
+const { foldr, all } = require("../helpers")
 
 /**
  * Find the first element that matches the filter criteria
@@ -14,10 +14,18 @@ const { all } = require("../helpers")
  * findBy({id: 2})(comments)
  * // => {id: 2, body: "dolor"}
  */
-module.exports = filter => xs => {
-  for (let i = 0; i < xs.length; i++) {
-    if (all(key => filter[key] === xs[i][key], Object.keys(filter))) {
-      return xs[i]
-    }
-  }
-}
+
+module.exports = filter => xs =>
+  foldr(
+    (acc, val) => {
+      if (acc) {
+        return acc
+      } else if (all(key => filter[key] === val[key], Object.keys(filter))) {
+        return val
+      } else {
+        return undefined
+      }
+    },
+    xs,
+    undefined
+  )

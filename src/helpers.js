@@ -1,30 +1,22 @@
 /**
- * Accumulate values from left to right
+ * Accumulate values from right to left
  *
  * @param {Function}  Function taking two parameters: current value of
  * accumulator, and the current value in the list
  * @param {[]}        List of values to fold over
- * @param {*}         Initial value of accumulator, first element of the list
- * is used if not provided.
+ * @param {*}         Initial value of accumulator
  *
- * @return {*}        Final value of the accumulator.
+ * @return {*}        Final value of the accumulator
  *
  * @example
- * foldl(Math.max, [1,2,3]) = 3
+ * foldr(Math.max, [1,2,3]) = 3
  */
-const foldl = (f, xs, acc) => {
-  let i = 0
+const foldr = (f, xs, acc) => {
+  const [y, ...ys] = xs
 
-  if (acc === undefined || acc === null) {
-    acc = xs[0]
-    i = 1
-  }
+  acc = y ? f(acc, y) : acc
 
-  for (; i < xs.length; i++) {
-    acc = f(acc, xs[i])
-  }
-
-  return acc
+  return ys.length ? foldr(f, ys, acc) : acc
 }
 
 /**
@@ -40,7 +32,7 @@ const foldl = (f, xs, acc) => {
  * @example
  * applyAll([x => x + 2, x => x * 2], 1) = 6
  */
-const applyAll = (fs, x, i, xs) => foldl((acc, val) => val(acc, i, xs), fs, x)
+const applyAll = (fs, x, i, xs) => foldr((acc, val) => val(acc, i, xs), fs, x)
 
 /**
  * Apply a function to every element of a list, returning true if any
@@ -55,7 +47,7 @@ const applyAll = (fs, x, i, xs) => foldl((acc, val) => val(acc, i, xs), fs, x)
  * any(x => x > 3, [1,2,6]) = true
  */
 const any = (f, xs) =>
-  foldl((acc, val) => (acc || f(val)) && typeof f(val) === "boolean", xs, false)
+  foldr((acc, val) => (acc || f(val)) && typeof f(val) === "boolean", xs, false)
 
 /**
  * Apply a function to every element of a list, returning true if all
@@ -70,10 +62,10 @@ const any = (f, xs) =>
  * all(x => x > 3, [4,5,6]) = true
  */
 const all = (f, xs) =>
-  foldl((acc, val) => acc && f(val) && typeof f(val) === "boolean", xs, true)
+  foldr((acc, val) => acc && f(val) && typeof f(val) === "boolean", xs, true)
 
 module.exports = {
-  foldl,
+  foldr,
   applyAll,
   any,
   all,

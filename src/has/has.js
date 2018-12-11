@@ -1,4 +1,4 @@
-const { any } = require("../helpers")
+const { foldr, any } = require("../helpers")
 
 /**
  * Check if value is in array
@@ -22,13 +22,7 @@ const { any } = require("../helpers")
 module.exports = x => xs => {
   if (typeof x === "function") {
     return any(x, xs)
-  } else {
-    for (let i = 0; i < xs.length; i++) {
-      if (x === xs[i]) {
-        return true
-      }
-    }
   }
 
-  return false
+  return foldr((acc, val) => acc || x === val, xs, false)
 }
