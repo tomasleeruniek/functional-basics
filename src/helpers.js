@@ -13,11 +13,14 @@
  * foldl(Math.max, [1,2,3]) = 3
  */
 const foldl = (f, xs, acc) => {
+  let i = 0
+
   if (acc === undefined || acc === null) {
     acc = xs[0]
+    i = 1
   }
 
-  for (let i = 0; i < xs.length; i++) {
+  for (; /* i */ i < xs.length; i++) {
     acc = f(acc, xs[i])
   }
 
