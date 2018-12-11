@@ -11,13 +11,15 @@
  * @example
  * foldr(Math.max, [1,2,3]) = 3
  */
-const foldr = (f, xs, acc) => {
+const _foldr = (f, xs, acc, i, lst) => {
   const [y, ...ys] = xs
 
-  acc = y ? f(acc, y) : acc
+  acc = y ? f(acc, y, i, lst) : acc
 
-  return ys.length ? foldr(f, ys, acc) : acc
+  return ys.length ? foldr(f, ys, acc, i + 1, lst) : acc
 }
+
+const foldr = (f, xs, acc) => _foldr(f, xs, acc, 0, xs)
 
 /**
  * Apply a list of functions to a single value.

@@ -1,4 +1,4 @@
-const { applyAll } = require("../helpers")
+const { foldr, applyAll } = require("../helpers")
 
 /**
  * Iterate over an input list, calling `fn` for each element, return a new
@@ -17,9 +17,14 @@ module.exports = (...fs) => xs => {
   const ys = []
 
   if (Array.isArray(xs)) {
-    for (let i = 0; i < xs.length; i++) {
-      ys.push(applyAll(fs, xs[i], i, xs))
-    }
+    foldr(
+      (acc, val, i, lst) => {
+        acc.push(applyAll(fs, val, i, lst))
+        return acc
+      },
+      xs,
+      ys
+    )
   } else if (xs) {
     ys.push(applyAll(fs, xs))
   }
