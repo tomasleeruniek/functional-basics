@@ -1,16 +1,3 @@
-/**
- * Accumulate values from right to left
- *
- * @param {Function}  Function taking two parameters: current value of
- * accumulator, and the current value in the list
- * @param {[]}        List of values to fold over
- * @param {*}         Initial value of accumulator
- *
- * @return {*}        Final value of the accumulator
- *
- * @example
- * foldr(Math.max, [1,2,3]) = 3
- */
 const _foldr = (f, xs, acc, i, lst) => {
   const [y, ...ys] = xs
 
@@ -19,22 +6,23 @@ const _foldr = (f, xs, acc, i, lst) => {
   return ys.length ? foldr(f, ys, acc, i + 1, lst) : acc
 }
 
-const foldr = (f, xs, acc) => _foldr(f, xs, acc, 0, xs)
-
 /**
- * Apply a list of functions to a single value.
+ * Accumulate values from right to left
  *
- * @param {Function[]}  List of functions to apply
- * @param {*}           Initial value
- * @param {number}      Index of initial value (if it's from a list)
- * @param {[]}          List of initial values (if applicable)
+ * @param {Function}  Function taking from two to four parameters:
+ *    - current value of accumulator,
+ *    - current value in the list,
+ *    - index of value in the list,
+ *    - the original list
+ * @param {[]}        List of values to fold over
+ * @param {*}         Initial value of accumulator
  *
- * @return {*}
+ * @return {*}        Final value of the accumulator
  *
  * @example
- * applyAll([x => x + 2, x => x * 2], 1) = 6
+ * foldr(Math.max, [1,2,3]) = 3
  */
-const applyAll = (fs, x, i, xs) => foldr((acc, val) => val(acc, i, xs), fs, x)
+const foldr = (f, xs, acc) => _foldr(f, xs, acc, 0, xs)
 
 /**
  * Apply a function to every element of a list, returning true if any
@@ -66,9 +54,24 @@ const any = (f, xs) =>
 const all = (f, xs) =>
   foldr((acc, val) => acc && f(val) && typeof f(val) === "boolean", xs, true)
 
+/**
+ * Apply a list of functions to a single value.
+ *
+ * @param {Function[]}  List of functions to apply
+ * @param {*}           Initial value
+ * @param {number}      Index of initial value (if it's from a list)
+ * @param {[]}          List of initial values (if applicable)
+ *
+ * @return {*}
+ *
+ * @example
+ * applyAll([x => x + 2, x => x * 2], 1) = 6
+ */
+const applyAll = (fs, x, i, xs) => foldr((acc, val) => val(acc, i, xs), fs, x)
+
 module.exports = {
   foldr,
-  applyAll,
   any,
   all,
+  applyAll,
 }
