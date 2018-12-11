@@ -20,7 +20,7 @@ const foldl = (f, xs, acc) => {
     i = 1
   }
 
-  for (; /* i */ i < xs.length; i++) {
+  for (; i < xs.length; i++) {
     acc = f(acc, xs[i])
   }
 
