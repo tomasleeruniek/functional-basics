@@ -1,3 +1,5 @@
+const { applyAll } = require("../helpers")
+
 /**
  * Performs left-to-right function composition. The leftmost function may have
  * any arity, the remaining functions must be unary.
@@ -13,4 +15,10 @@
  * pipe( inc, inc )( 2 )
  * // => 4
  */
-module.exports = () => () => {}
+module.exports = (...fs) => (...xs) => {
+  const f = fs.shift()
+
+  const y = f(...xs)
+
+  return applyAll(fs, y)
+}
