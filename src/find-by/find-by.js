@@ -18,13 +18,11 @@ const { foldr, all } = require("../helpers")
 module.exports = filter => xs =>
   foldr(
     (acc, val) => {
-      if (acc) {
-        return acc
-      } else if (all(key => filter[key] === val[key], Object.keys(filter))) {
+      if (!acc && all(key => filter[key] === val[key], Object.keys(filter))) {
         return val
-      } else {
-        return undefined
       }
+
+      return acc
     },
     xs,
     undefined
