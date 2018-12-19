@@ -13,21 +13,9 @@ const { foldr, applyAll } = require("../helpers")
  * map( x => x * x )( [ 1, 2, 3 ] )
  * // => [ 1, 4, 9 ]
  */
-module.exports = (...fs) => xs => {
-  const ys = []
-
-  if (Array.isArray(xs)) {
-    foldr(
-      (acc, val, i, lst) => {
-        acc.push(applyAll(fs, val, i, lst))
-        return acc
-      },
-      xs,
-      ys
-    )
-  } else if (xs) {
-    ys.push(applyAll(fs, xs))
-  }
-
-  return ys
-}
+module.exports = (...fs) => x =>
+  foldr(
+    (acc, ...rest) => [...acc, applyAll(fs, ...rest)],
+    Array.isArray(x) ? x : [x],
+    []
+  )
