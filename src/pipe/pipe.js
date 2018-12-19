@@ -15,10 +15,4 @@ const { applyAll } = require("../helpers")
  * pipe( inc, inc )( 2 )
  * // => 4
  */
-module.exports = (...fs) => (...xs) => {
-  const [f, ...gs] = fs
-
-  const y = f(...xs)
-
-  return applyAll(gs, y)
-}
+module.exports = (f, ...fs) => (...xs) => applyAll(fs, f(...xs))
