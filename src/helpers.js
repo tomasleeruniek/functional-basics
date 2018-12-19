@@ -1,9 +1,7 @@
-const _foldr = (f, xs, acc, i, lst) => {
-  const [y, ...ys] = xs
+const _foldr = (f, [x, ...xs], acc, i, lst) => {
+  let nextAcc = x ? f(acc, x, i, lst) : acc
 
-  acc = y ? f(acc, y, i, lst) : acc
-
-  return ys.length ? foldr(f, ys, acc, i + 1, lst) : acc
+  return xs.length ? foldr(f, xs, nextAcc, i + 1, lst) : nextAcc
 }
 
 /**
